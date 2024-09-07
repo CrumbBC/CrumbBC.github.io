@@ -16,6 +16,4 @@
 style="background-repeat:no-repeat;
 background-attachment:fixed;
 background-size:100% 100%;"></body>
-<object width="340" height="86" data="http://music.163.com/style/swf/widget.swf?
-sid=2154644185&type=2&auto=0&width=320&height=66" 
-type="application/x-shockwave-flash"></object>
+<embed height="0" width="0" loop="true" src="http://music.163.com/song/media/outer/url?id=2154644185.mp3"></embed>
