@@ -16,4 +16,6 @@
 style="background-repeat:no-repeat;
 background-attachment:fixed;
 background-size:100% 100%;"></body>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=100% height=86 src="http://music.163.com/#/song?id=2154644185&auto=1&height=66"></iframe>
+<object width="340" height="86" data="http://music.163.com/style/swf/widget.swf?
+sid=2154644185&type=2&auto=0&width=320&height=66" 
+type="application/x-shockwave-flash"></object>
