@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style id="ss">
+        html,
+        body {
+            background-color: #fff !important;
+        }
+
+        .box .list {
+            display: flex;
+            align-items: center;
+            background-color: slategray;
+        }
+
+        .box .list .item {
+            height: 75px;
+            width: 75px;
+            border: 1px solid #000;
+            background-color: #162a40;
+            transition: 0.2s;
+        }
+
+        .box .list:nth-of-type(6) .item:nth-of-type(6) {
+            background-color: slategray;
+        }
+
+        .person {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid #000;
+            border-bottom: 3px solid crimson;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div style="position: absolute;" id="dead"></div>
+    <div style="position: absolute;right: 0;" id="dead1"></div>
+    <div style="height: 847px;width: 847px;margin: 0 auto;position: relative;">
+        <div class="box">
+
+        </div>
+        <div class="person" data-local="bottom"></div>
+    </div>
+
+</body>
+<script>
+    const box = document.querySelector('.box')
+    const person = document.querySelector('.person')
+    const ss = document.querySelector('#ss')
+
+
+    for (let i = 0; i < 11; i++) {
+        box.innerHTML += `
+        <div class="list">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+        `
+    }
+
+    const items = document.querySelectorAll('.item')
+
+    for (let i = 0; i < 10; i++) {
+        let rd1 = parseInt(Math.random() * 11) + 1
+        let rd2 = parseInt(Math.random() * 11) + 1
+
+        if (rd1 === 6 && rd2 === 6) {
+            for (; ;) {
+                rd1 = parseInt(Math.random() * 11) + 1
+                if (rd1 != 6) {
+                    break
+                }
+            }
+            for (; ;) {
+                rd2 = parseInt(Math.random() * 11) + 1
+                if (rd2 != 6) {
+                    break
+                }
+            }
+        }
+
+        ss.innerHTML += `
+            .box .list:nth-of-type(${rd1}) .item:nth-of-type(${rd2}) {
+                background-color: slategray;
+            }
+        `
+
+        if (i === 9) {
+            let rd3 = parseInt(Math.random() * 11) + 1
+            let rd4 = parseInt(Math.random() * 11) + 1
+
+            function gold() {
+                for (; ;) {
+                rd3 = parseInt(Math.random() * 11) + 1
+                if (rd3 != 6) {
+                    break
+                }
+            }
+            for (; ;) {
+                rd4 = parseInt(Math.random() * 11) + 1
+                if (rd4 != 6) {
+                    break
+                }
+            }
+            }
+
+            if (rd3 === 6 && rd4 === 6) {
+                gold(rd3,rd4)
+            }else if(items[rd3 * rd4].style.backgroundColor === 'slategray') {
+                gold(rd3,rd4)
+            }
+
+            items[rd3 * rd4].dataset.gold = 'golden'
+        }
+    }
+
+
+    let X = 0
+    let Y = 0
+    let flag = false
+
+    window.addEventListener('keydown', (e) => {
+
+        if (!['w', 'a', 's', 'd', ' '].includes(e.key)) {
+            return
+        }
+        if (flag) {
+            return
+        }
+        flag = true
+
+
+        const element = document.querySelector('.person')
+        const rect = element.getBoundingClientRect()
+
+
+
+        if (e.key === 'w') {
+
+            person.style.border = `3px solid #000`
+            person.style.borderTop = `3px solid crimson`
+            person.dataset.local = 'top'
+
+            const wColor = window.getComputedStyle(document.elementFromPoint(rect.left, rect.top - 77), null).backgroundColor
+
+            if (wColor === 'rgb(22, 42, 64)' || wColor === 'rgba(22, 42, 64, 0.5)' || wColor === 'rgb(255, 215, 0)') {
+                return
+            }
+            X += 77
+            if (X > 385) {
+                X = 385
+            }
+            person.style.transform = `translate(calc(-50% - ${Y}px),calc(-50% - ${X}px))`
+        }
+        if (e.key === 's') {
+
+            person.style.border = `3px solid #000`
+            person.style.borderBottom = `3px solid crimson`
+            person.dataset.local = 'bottom'
+            
+            const sColor = window.getComputedStyle(document.elementFromPoint(rect.left, rect.top + 77), null).backgroundColor
+
+            if (sColor === 'rgb(22, 42, 64)' || sColor === 'rgba(22, 42, 64, 0.5)' || sColor === 'rgb(255, 215, 0)') {
+                return
+            }
+            X -= 77
+            if (X < -385) {
+                X = -385
+            }
+
+            person.style.transform = `translate(calc(-50% - ${Y}px),calc(-50% - ${X}px))`
+        }
+
+        if (e.key === 'a') {
+
+            person.style.border = `3px solid #000`
+            person.style.borderLeft = `3px solid crimson`
+            person.dataset.local = 'left'
+
+            const aColor = window.getComputedStyle(document.elementFromPoint(rect.left - 77, rect.top), null).backgroundColor
+
+            if (aColor === 'rgb(22, 42, 64)' || aColor === 'rgba(22, 42, 64, 0.5)' || aColor === 'rgb(255, 215, 0)') {
+                return
+            }
+
+            Y += 77
+            if (Y > 385) {
+                Y = 385
+            }
+
+            person.style.transform = `translate(calc(-50% - ${Y}px),calc(-50% - ${X}px))`
+        }
+        if (e.key === 'd') {
+
+            person.style.border = `3px solid #000`
+            person.style.borderRight = `3px solid crimson`
+            person.dataset.local = 'right'
+
+            const dColor = window.getComputedStyle(document.elementFromPoint(rect.left + 77, rect.top), null).backgroundColor
+
+            if (dColor === 'rgb(22, 42, 64)' || dColor === 'rgba(22, 42, 64, 0.5)' || dColor === 'rgb(255, 215, 0)') {
+                return
+            }
+
+            Y -= 77
+            if (Y < -385) {
+                Y = -385
+            }
+
+            person.style.transform = `translate(calc(-50% - ${Y}px),calc(-50% - ${X}px))`
+        }
+
+        if (e.code === 'Space') {
+            if (person.dataset.local === 'top') {
+                const topColor = document.elementFromPoint(rect.left, rect.top - 77)
+                if (window.getComputedStyle(topColor, null).backgroundColor === 'rgb(22, 42, 64)') {
+                    topColor.style.backgroundColor = 'rgba(22, 42, 64, 0.5)'
+                } else if (window.getComputedStyle(topColor, null).backgroundColor === 'rgba(22, 42, 64, 0.5)') {
+                    if (topColor.dataset.gold === 'golden') {
+                        topColor.style.backgroundColor = 'gold'
+                        setTimeout(() => {
+                            alert('你挖到了黄金！')
+                            window.location.reload()
+                        },200)
+                    } else {
+                        topColor.style.backgroundColor = 'slategray'
+                    }
+                }
+            }
+            if (person.dataset.local === 'bottom') {
+                const bottomColor = document.elementFromPoint(rect.left, rect.top + 77)
+                if (window.getComputedStyle(bottomColor, null).backgroundColor === 'rgb(22, 42, 64)') {
+                    bottomColor.style.backgroundColor = 'rgba(22, 42, 64, 0.5)'
+                } else if (window.getComputedStyle(bottomColor, null).backgroundColor === 'rgba(22, 42, 64, 0.5)') {
+                    if (bottomColor.dataset.gold === 'golden') {
+                        bottomColor.style.backgroundColor = 'gold'
+                        setTimeout(() => {
+                            alert('你挖到了黄金！')
+                            window.location.reload()
+                        },200)
+                    } else {
+                        bottomColor.style.backgroundColor = 'slategray'
+                    }
+                }
+            }
+            if (person.dataset.local === 'left') {
+                const leftColor = document.elementFromPoint(rect.left - 77, rect.top)
+                if (window.getComputedStyle(leftColor, null).backgroundColor === 'rgb(22, 42, 64)') {
+                    leftColor.style.backgroundColor = 'rgba(22, 42, 64, 0.5)'
+                } else if (window.getComputedStyle(leftColor, null).backgroundColor === 'rgba(22, 42, 64, 0.5)') {
+                    if (leftColor.dataset.gold === 'golden') {
+                        leftColor.style.backgroundColor = 'gold'
+                        setTimeout(() => {
+                            alert('你挖到了黄金！')
+                            window.location.reload()
+                        },200)
+                    } else {
+                        leftColor.style.backgroundColor = 'slategray'
+                    }
+                }
+            }
+            if (person.dataset.local === 'right') {
+                const rightColor = document.elementFromPoint(rect.left + 77, rect.top)
+                if (window.getComputedStyle(rightColor, null).backgroundColor === 'rgb(22, 42, 64)') {
+                    rightColor.style.backgroundColor = 'rgba(22, 42, 64, 0.5)'
+                } else if (window.getComputedStyle(rightColor, null).backgroundColor === 'rgba(22, 42, 64, 0.5)') {
+                    if (rightColor.dataset.gold === 'golden') {
+                        rightColor.style.backgroundColor = 'gold'
+                        setTimeout(() => {
+                            alert('你挖到了黄金！')
+                            window.location.reload()
+                        },200)
+                    } else {
+                        rightColor.style.backgroundColor = 'slategray'
+                    }
+                }
+            }
+        }
+
+    })
+
+    window.addEventListener('keyup', (e) => {
+        if (['w', 'a', 's', 'd', ' '].includes(e.key)) {
+            flag = false;
+        }
+    })
+
+</script>
+
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,body {
+            background-color: #fff !important;
+        }
+
+        .box .list {
+            display: flex;
+            align-items: center;
+            background-color: slategray;
+        }
+
+        .box .list .item {
+            height: 75px;
+            width: 75px;
+            border: 1px solid #000;
+            background-color: #162a40;
+            transition: 0.2s;
+        }
+
+        .box .list:nth-of-type(3) .item:nth-of-type(3) {
+            background-color: slategray;
+        }
+
+        .box .list:nth-of-type(3) .item:nth-of-type(4) {
+            background-color: slategray;
+        }
+
+        .box .list:nth-of-type(4) .item:nth-of-type(3) {
+            background-color: slategray;
+        }
+
+        .box .list:nth-of-type(8) .item:nth-of-type(8) {
+            background-color: slategray;
+        }
+
+        .box .list:nth-of-type(7) .item:nth-of-type(8) {
+            background-color: slategray;
+        }
+
+        .box .list:nth-of-type(8) .item:nth-of-type(7) {
+            background-color: slategray;
+        }
+
+        .person1 {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid #000;
+            border-bottom: 3px solid crimson;
+            top: 22.5%;
+            left: 22.5%;
+            transform: translate(-50%, -50%);
+        }
+
+        .person2 {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid #000;
+            border-bottom: 3px solid cornflowerblue;
+            top: 68%;
+            left: 68%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div style="position: absolute;" id="dead"></div>
+    <div style="position: absolute;right: 0;" id="dead1"></div>
+    <div style="height: 847px;width: 847px;margin: 0 auto;position: relative;">
+        <div class="box">
+
+        </div>
+        <div class="person1"></div>
+        <div class="person2"></div>
+    </div>
+
+</body>
+<script>
+    const box = document.querySelector('.box')
+    const person1 = document.querySelector('.person1')
+    const person2 = document.querySelector('.person2')
+    const dead = document.querySelector('#dead')
+    const dead1 = document.querySelector('#dead1')
+    let i = localStorage.getItem('num') || 0
+    let j = localStorage.getItem('num1') || 0
+    
+
+    
+
+    dead.innerHTML = `红队死了：${i}次`
+    dead1.innerHTML = `蓝队死了：${j}次`
+
+    for (let i = 0; i < 11; i++) {
+        box.innerHTML += `
+        <div class="list">
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+            <div class="item"></div>
+        </div>
+        `
+    }
+
+    function one(person) {
+
+        let X = 0
+        let Y = 0
+        let flag = false
+
+        window.addEventListener('keydown', (e) => {
+
+        if (!['w','a','s','d',' '].includes(e.key)){
+            return
+        }
+        if (flag) {
+            return
+        }
+        flag = true
+        
+        
+        const element = document.querySelector('.person1')
+        const rect = element.getBoundingClientRect()
+        
+
+        
+        if (e.key === 'w') {
+
+            person.style.border = `3px solid #000`
+            person.style.borderTop = `3px solid crimson`
+
+            if(window.getComputedStyle(document.elementFromPoint(rect.left,rect.top - 77),null).backgroundColor === 'rgb(22, 42, 64)') {
+                return
+            }
+            X += 77
+            if (X > 154) {
+                X = 154
+            }
+            
+            person.style.transform = `translate(calc(-50% - ${Y}px),calc(-50% - ${X}px))`
+        }
+        if (e.key === 's') {
+
+            person.style.border = `3px solid #000`
+            person.style.borderBottom = `3px solid crimson`
+
+            if(window.getComputedStyle(document.elementFromPoint(rect.left,rect.top + 77),null).backgroundColor === 'rgb(22, 42, 64)') {
+                return
+            }
+            X -= 77
+            if (X < -616) {
+                X = -616
+            }
+            
+            person.style.transform = `translate(calc(-50% - ${Y}px),calc(-50% - ${X}px))`
+        }
+
+        if (e.key === 'a') {
+
+            person.style.border = `3px solid #000`
+            person.style.borderLeft = `3px solid crimson`
+
+            if(window.getComputedStyle(document.elementFromPoint(rect.left - 77,rect.top),null).backgroundColor === 'rgb(22, 42, 64)') {
+                return
+            }
+
+            Y += 77
+            if (Y > 154) {
+                Y = 154
+            }
+            
+            person.style.transform = `translate(calc(-50% - ${Y}px),calc(-50% - ${X}px))`
+        }
+        if (e.key === 'd') {
+
+            person.style.border = `3px solid #000`
+            person.style.borderRight = `3px solid crimson`
+
+            if(window.getComputedStyle(document.elementFromPoint(rect.left + 77,rect.top),null).backgroundColor === 'rgb(22, 42, 64)') {
+                return
+            }
+
+            Y -= 77
+            if (Y < -616) {
+                Y = -616
+            }
+            
+            person.style.transform = `translate(calc(-50% - ${Y}px),calc(-50% - ${X}px))`
+        }
+
+
+        if(e.code === 'Space') {
+            if(document.elementFromPoint(rect.left,rect.top).style.backgroundColor === 'red') {
+
+            }else {
+                document.elementFromPoint(rect.left,rect.top).style.backgroundColor = 'red'
+                const xx = document.elementFromPoint(rect.left,rect.top)
+                const xxRect = xx.getBoundingClientRect()
+                setTimeout(() => {
+                    xx.style.backgroundColor = 'goldenrod'
+                    document.elementFromPoint(xxRect.left,xxRect.top-77).style.backgroundColor = 'goldenrod'
+                    document.elementFromPoint(xxRect.left,xxRect.top+77).style.backgroundColor = 'goldenrod'
+                    document.elementFromPoint(xxRect.left-77,xxRect.top).style.backgroundColor = 'goldenrod'
+                    document.elementFromPoint(xxRect.left+77,xxRect.top).style.backgroundColor = 'goldenrod'
+                    
+                    setTimeout(() => {
+                        xx.style.backgroundColor = 'slategray'
+                        document.elementFromPoint(xxRect.left,xxRect.top-77).style.backgroundColor = 'slategray'
+                        document.elementFromPoint(xxRect.left,xxRect.top+77).style.backgroundColor = 'slategray'
+                        document.elementFromPoint(xxRect.left-77,xxRect.top).style.backgroundColor = 'slategray'
+                        document.elementFromPoint(xxRect.left+77,xxRect.top).style.backgroundColor = 'slategray'
+                    },400)
+                },3000)
+            }
+        }
+
+
+
+    })
+
+    window.addEventListener('keyup', (e) => {
+        if (['w','a','s','d',' '].includes(e.key)) {
+                flag = false;
+        }
+    })
+
+}
+
+    
+
+
+    function two(person) {
+
+        let X = 0
+        let Y = 0
+        let stauts = false
+
+        window.addEventListener('keydown', (e) => {
+        if (!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','0'].includes(e.key)) {
+            return
+        }   
+        if (stauts) {
+            return
+        }
+        stauts = true
+
+        
+        
+        const element = document.querySelector('.person2')
+        const rect = element.getBoundingClientRect()
+        console.log(e.key)
+
+        
+        if (e.key === 'ArrowUp') {
+
+            person.style.border = `3px solid #000`
+            person.style.borderTop = `3px solid cornflowerblue`
+
+            if(window.getComputedStyle(document.elementFromPoint(rect.left,rect.top - 77),null).backgroundColor === 'rgb(22, 42, 64)') {
+                return
+            }
+            X += 77
+            if (X > 539) {
+                X = 539
+            }
+            
+            person.style.transform = `translate(calc(-50% - ${Y}px),calc(-50% - ${X}px))`
+        }
+        if (e.key === 'ArrowDown') {
+
+            person.style.border = `3px solid #000`
+            person.style.borderBottom = `3px solid cornflowerblue`
+
+            if(window.getComputedStyle(document.elementFromPoint(rect.left,rect.top + 77),null).backgroundColor === 'rgb(22, 42, 64)') {
+                return
+            }
+            X -= 77
+            if (X < -231) {
+                X = -231
+            }
+            
+            person.style.transform = `translate(calc(-50% - ${Y}px),calc(-50% - ${X}px))`
+        }
+
+        if (e.key === 'ArrowLeft') {
+
+            person.style.border = `3px solid #000`
+            person.style.borderLeft = `3px solid cornflowerblue`
+
+            if(window.getComputedStyle(document.elementFromPoint(rect.left - 77,rect.top),null).backgroundColor === 'rgb(22, 42, 64)') {
+                return
+            }
+
+            Y += 77
+            if (Y > 539) {
+                Y = 539
+            }
+            
+            person.style.transform = `translate(calc(-50% - ${Y}px),calc(-50% - ${X}px))`
+        }
+        if (e.key === 'ArrowRight') {
+
+            person.style.border = `3px solid #000`
+            person.style.borderRight = `3px solid cornflowerblue`
+
+            if(window.getComputedStyle(document.elementFromPoint(rect.left + 77,rect.top),null).backgroundColor === 'rgb(22, 42, 64)') {
+                return
+            }
+
+            Y -= 77
+            if (Y < -231) {
+                Y = -231
+            }
+            
+            person.style.transform = `translate(calc(-50% - ${Y}px),calc(-50% - ${X}px))`
+        }
+
+
+        if(e.key === '0') {
+            if(document.elementFromPoint(rect.left,rect.top).style.backgroundColor === 'red') {
+
+            }else {
+                document.elementFromPoint(rect.left,rect.top).style.backgroundColor = 'red'
+                const xx = document.elementFromPoint(rect.left,rect.top)
+                const xxRect = xx.getBoundingClientRect()
+                setTimeout(() => {
+                    xx.style.backgroundColor = 'goldenrod'
+                    document.elementFromPoint(xxRect.left,xxRect.top-77).style.backgroundColor = 'goldenrod'
+                    document.elementFromPoint(xxRect.left,xxRect.top+77).style.backgroundColor = 'goldenrod'
+                    document.elementFromPoint(xxRect.left-77,xxRect.top).style.backgroundColor = 'goldenrod'
+                    document.elementFromPoint(xxRect.left+77,xxRect.top).style.backgroundColor = 'goldenrod'
+
+                    setTimeout(() => {
+                        xx.style.backgroundColor = 'slategray'
+                        document.elementFromPoint(xxRect.left,xxRect.top-77).style.backgroundColor = 'slategray'
+                        document.elementFromPoint(xxRect.left,xxRect.top+77).style.backgroundColor = 'slategray'
+                        document.elementFromPoint(xxRect.left-77,xxRect.top).style.backgroundColor = 'slategray'
+                        document.elementFromPoint(xxRect.left+77,xxRect.top).style.backgroundColor = 'slategray'
+                    },300)
+                },3000)
+            }
+        }
+    })
+
+    window.addEventListener('keyup', (e) => {
+           if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','0'].includes(e.key)) {
+                stauts = false
+            }
+        })
+}
+
+    one(person1)
+    two(person2)
+
+    let timer = setInterval(() => {
+        const wz = person1.getBoundingClientRect()
+        if(document.elementFromPoint(wz.left,wz.top).style.backgroundColor === 'goldenrod') {
+            clearInterval(timer)
+            alert('蓝队获胜')
+            i++
+            localStorage.setItem('num',i)
+            window.location.reload()
+            return
+        }
+
+        const wz1 = person2.getBoundingClientRect()
+        if(document.elementFromPoint(wz1.left,wz1.top).style.backgroundColor === 'goldenrod') {
+            clearInterval(timer)
+            alert('红队获胜')
+            j++
+            localStorage.setItem('num1',j)
+            window.location.reload()
+            return
+        }
+    },20)
+        
+</script>
+
+</html>
